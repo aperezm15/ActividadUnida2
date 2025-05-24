@@ -1,0 +1,158 @@
+@startuml
+
+class Sucursal {
+    - codigo: String;
+    - nombreSucursal: String;
+    - ciudad: String;
+    - direccion: String;
+    - telefono: String;
+    + Sucursal(codigo: String, numeroSucursal: String, ciudad: String, direccion: String, telefono: String)
+    + getCodigo(): String;
+    + getNombreSucursal(): String;
+    + getCiudad(): String;
+    + getDireccion(): String;
+    + getTelefono(): String;
+    + setCodigo(codigo: String): void;
+    + setNumeroSucursal(numeroSucursal: String): void;
+    + setCiudad(ciudad: String): void;
+    + setDireccion(direccion: String): void;
+    + setTelefono(telefono: String): void;
+    + mostrarInformacion(): void;
+    + realizarReserva(turista: Turista, tipoPension: TipoPension, hotel: Hotel, fechaLlegada: Date, fechaSalida: Date);
+    + realizarReserva(turista: Turista, tipoPlaza: TipoPlaza, vuelo: Vuelo);
+
+}
+
+class Hotel {
+    - codigo: String;
+    - nombreHotel: String;
+    - direccion: String;
+    - ciudad: String;
+    - telefono: String;
+    - plazasDisponibles: int;
+    + Hotel(codigo: String, nombreHotel: String, direccion: String, ciudad: String, telefono: String, plazasDisponibles: int);
+    + getCodigo(): String;
+    + getNombrehHotel(): String;
+    + getDireccion(): String;
+    + getCiudad(): String;
+    + getTelefono(): String;
+    + getPlazasDisponibles(): int;
+    + setCodigo(codigo: String): void;
+    + setNumeroHotel(numeroHotel: String): void;
+    + setDireccion(direccion: String): void;
+    + setCiudad(ciudad: String): void;
+    + setTelefono(telefono: String): void;
+    + setPlazasDisponibles(plazasDisponibles: int): void;
+}
+
+class Vuelo {
+    - numeroVuelo: String;
+    - fehaHoraVuelo: String;
+    - origen: String;
+    - destino: String;
+    - plazasDisponibles: int;
+    - plazasDisponiblesTurista: int;
+    + Vuelo(numeroVuelo: String, fechaHoraVuelo: String, origen: String, destino: String, plazasDisponibles: int, plazasDisponiblesTurista: int);
+    + getNumeroVuelo(): String;
+    + getFechaHoraVuelo(): String;
+    + getOrigen(): String;
+    + getDestino(): String;
+    + getPlazasDisponibles(): String;
+    + getPlazasDisponiblesTurista(): String;
+    + setNumeroVuelo(vuelo: String): void;
+    + setFechaHoraVuelo(fechaHoraVuelo: String): void;
+    + setOrigen(origen: String): void;
+    + setDestino(destino: String): void;
+    + setPlazasDisponibles(plazasDisponibles: int): void;
+    + setPlazasDisponiblesTurista(plazasDisponiblesTurista: int): void;
+    + mostrarInformacion(): void;
+}   
+
+class Turista {
+    - codigo: String;
+    - nombreCompleto: String;
+    - id: String;
+    - direccion: String;
+    - telefono: String;
+    - sucursal: Sucursal;
+    + Turista(codigo: String, nombreCompleto: String, id: String, direccion: String, telefono: String, sucursal: Sucursal);
+    + getCodigo(): String;
+    + getNombreCompleto(): String;
+    + getId(): String;
+    + getDireccion(): String;
+    + getTelefono(): String;
+    + getSucursal(): Sucursal;
+    + setCodigo(codigo: String): void;
+    + setId(id: String): void;
+    + setDireccion(direccion: String): void;
+    + setTelefono(telefono: String): void;
+    + setSucursal(sucursal: sucursal): void;
+}
+
+class TuristaReservaHotel {
+    - turista: Turista;
+    - tipoPension: TipoPension;
+    - hotel: Hotel;
+    - fechaLlegada: Date;
+    - fechaSalida: Date;
+    + mostrarInformacion(turista: Turista, tipoPension: TipoPension, hotel: Hotel, fechaLlegada: Date, fechaSalida: Date);
+    + getTurista(): Turista;
+    + getTipoPension(): TipoPension;
+    + getHotel(): Hotel;
+    + getFechaLlegada(): FechaLlegada;
+    + getFechaSalida(): FechaSalida;
+    + setTipoPension(tipoPension: TipoPension): void;
+    + setHotel(hotel: Hotel): void;
+    + setFechaLlegada(fechaLlegada: Date): void;
+    + setFechaSalida(fechaSalida: Date): void;
+
+
+}
+
+class TuristaReservaVuelo {
+    - turista: Turista;
+    - tipoPlaza: TipoPlaza;
+    - vuelo: Vuelo;
+    + TuristaReservaVuelo(turista: Turista, tipoPlaza: TipoPlaza, vuelo: Vuelo);
+    + mostrarInformacion(): void;
+    + getTipoPlaza(): TipoPlaaza;
+    + setTipoPlaza(tipoPlaza TipoPlaza): void;
+
+    
+}
+
+enum TipoPension {
+    MEDIO_PENSIONADO
+    PENSIONADO_COMPLETO
+}
+
+enum TipoPlaza {
+    TURISTA
+    PRIMERA_CLASE
+}
+'Cada turista debe estar asociado a una sucursal especifica
+'Una sucursal puede tener muchos turistas
+Sucursal "1" <-- "0..*" Turista : gestiona
+
+'La sucursal realiza reservas creando objetos TuristeReservaHotel o TuristaReservaVuelo
+Sucursal ..> TuristaReservaHotel : Crea
+Sucursal ..> TuristaReservaVuelo : Crea
+
+'TuristaReservaHotel contiene un Turista, un hotel, un TipoPension
+TuristaReservaHotel "1" *-- "1" Turista : Tiene
+TuristaReservaHotel "1" *-- "1" Hotel : En
+TuristaReservaHotel "1" *-- "1" TipoPension : Tipo de pension
+
+
+'TuristaReservaVuelo contiene un Turista, Vuelo y TipoPlaza
+TuristaReservaVuelo "1" *-- "1" Turista : tiene
+TuristaReservaVuelo "1" *-- "1" Vuelo : en
+TuristaReservaVuelo "1" *-- "1" TipoPlaza : tipoAsiento
+
+'Un Hotel puede tener muchas reservas
+Hotel "1" <-- "0..*" TuristaReservaHotel : registra
+
+'Un Vuelo puede tener muchas reservas
+Vuelo "1" <-- "0..*" TuristaReservaVuelo : registra
+
+@enduml
